@@ -1,0 +1,19 @@
+user routes
+____________
+post= '/user/registration'  *|* {request body} -> [firstName(string), lastName(string), 
+                                email(string), password(string)]
+post= '/user/login'         *|* {request body} -> [email(string), password(string)]
+get= '/user/isLoggedIn'     *|* N/A
+get= '/user/logout'         *|* N/A
+
+
+
+
+
+
+
+
+todo routes
+______________
+post= '/todo/create'        *|* {request body} -> [title(string), description(string), subTasks(array)]
+put= '/todo/edit/{:todoId}' *|* {request body} -> [title(string), description(string)]
