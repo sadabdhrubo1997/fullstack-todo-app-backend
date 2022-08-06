@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-const TodoSchema = new mongoose_1.Schema({
+const SubTaskSchema = new mongoose_1.Schema({
     title: {
         type: String,
         require: true,
@@ -12,29 +12,20 @@ const TodoSchema = new mongoose_1.Schema({
         require: true,
         maxlength: [1000, 'Title can not be more then 1000 characters'],
     },
-    status: {
+    todoId: {
         type: String,
-        enum: ['new', 'ongoing', 'paused', 'done'],
-        default: 'new',
+        required: true,
     },
     userId: {
         type: String,
-        require: true,
+        required: true,
     },
-    totalSubTasks: {
-        type: Number,
-        default: 0,
-    },
-    doneSubTasks: {
-        type: Number,
-        default: 0,
-    },
-    trash: {
+    isDone: {
         type: Boolean,
         default: false,
     },
 }, {
     timestamps: true,
 });
-const TodoModel = (0, mongoose_1.model)('Todo', TodoSchema);
-exports.default = TodoModel;
+const SubTaskModel = (0, mongoose_1.model)('SubTask', SubTaskSchema);
+exports.default = SubTaskModel;
