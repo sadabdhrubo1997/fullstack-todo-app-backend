@@ -1,9 +1,6 @@
 /*
 this helper function will inject same key and same value into the every object in the passed array.
 
-if your 
-
-
 */
 
 import { isObject } from './isObject';

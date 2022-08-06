@@ -1,5 +1,6 @@
-import SubTaskModel from '../../models/subTaskModel';
 import { NextFunction } from 'express';
+
+import SubTaskModel from '../../models/subTaskModel';
 
 interface IOption {
   userId: string;
