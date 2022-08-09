@@ -1,9 +1,8 @@
 import { Response } from 'express';
 
-export const sendServerSideError = (res: Response, error: any) => {
-  res.status(500).json({
+export const sendServerSideError = (res: Response, message?: any) => {
+  return res.status(500).json({
     status: 'error',
-    message: error || 'Something went wrong',
+    message: message || 'Something went wrong',
   });
 };
-  

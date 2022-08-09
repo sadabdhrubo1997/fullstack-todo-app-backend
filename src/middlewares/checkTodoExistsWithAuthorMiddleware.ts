@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { IRequest } from '../constants/interfaces';
 import TodoModel from '../models/todoModel';
+import { sendServerSideError } from '../utils/helper/sendServerSideError';
 
 export const checkTodoExistsWithAuthorMiddleware = async (
   req: IRequest,
@@ -19,12 +20,12 @@ export const checkTodoExistsWithAuthorMiddleware = async (
 
   try {
     // check if the task exists with id
-    const existingTask = await TodoModel.findOne({
+    const existingTodo = await TodoModel.findOne({
       _id: todoId,
-      userId: req.user.id,
+      user: req.user.id,
     }).lean();
 
-    if (!existingTask) {
+    if (!existingTodo) {
       return res.status(400).json({
         status: 'error',
         message: 'Todo does not exists or you do not have permission.',
@@ -32,16 +33,13 @@ export const checkTodoExistsWithAuthorMiddleware = async (
     }
 
     const tmp = {
-      todo: existingTask,
+      todo: existingTodo,
     };
 
     req.temp = tmp;
 
     next();
   } catch (error: any) {
-    return res.status(500).json({
-      status: 'error',
-      message: error.message || 'Something went wrong',
-    });
+    return sendServerSideError(res, error.message);
   }
 };

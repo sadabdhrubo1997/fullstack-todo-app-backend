@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import {
   checkTodoExistsWithAuthorMiddleware,
+  checkSubTaskExistsWithAuthorMiddleware,
   userLoginMiddleware,
 } from '../middlewares';
 import {
@@ -25,9 +26,9 @@ router.post(
   addNewSubTaskController
 );
 
-router.post(
+router.put(
   '/sub-tasks/edit/:subTaskId',
-  checkTodoExistsWithAuthorMiddleware,
+  checkSubTaskExistsWithAuthorMiddleware,
   editSubTaskController
 );
 
