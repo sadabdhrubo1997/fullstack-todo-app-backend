@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { IRequest } from '../../constants/interfaces';
 import TodoModel from '../../models/todoModel';
-import SubTaskModel from './../../models/subTaskModel';
+// import SubTaskModel from './../../models/subTaskModel';
 import { getUserWIseSubTasks } from './../../utils/helper/getUserWIseSubTasks';
 
 export const statusSetTodoController = async (
@@ -11,6 +11,7 @@ export const statusSetTodoController = async (
 ) => {
   const { todoId } = req.params;
   const { status } = req.body; // status could be 'new', 'ongoing', 'paused', 'done' only
+  const prevStatus = req.temp.todo.status;
 
   if (
     !(
@@ -22,7 +23,26 @@ export const statusSetTodoController = async (
   ) {
     return res.status(400).json({
       status: 'error',
-      message: 'todo status could be only new or ongoing or paused or done',
+      message: 'Todo status could be only new or ongoing or paused or done',
+    });
+  }
+
+  if (status === prevStatus) {
+    return res.status(400).json({
+      status: 'error',
+      message: `Todo status is already ${prevStatus}`,
+    });
+  }
+
+  if (
+    (prevStatus === 'new' && status === ('done' || 'paused')) ||
+    (prevStatus === 'ongoing' && status === 'new') ||
+    (prevStatus === 'paused' && status === 'new') ||
+    prevStatus === 'done'
+  ) {
+    return res.status(400).json({
+      status: 'error',
+      message: `You can not set your todo status from '${prevStatus}' to '${status}'`,
     });
   }
 

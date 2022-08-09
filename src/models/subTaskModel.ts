@@ -3,8 +3,8 @@ import { Schema, model, Document, Model } from 'mongoose';
 interface ISubTaskModel extends Document {
   title: string;
   description: string;
-  todoId: string;
-  userId: string;
+  todo: Schema.Types.ObjectId;
+  user: Schema.Types.ObjectId;
   isDone: boolean;
   updatedAt: Date;
   createdAt: Date;
@@ -22,12 +22,14 @@ const SubTaskSchema = new Schema<ISubTaskModel>(
       require: true,
       maxlength: [1000, 'Title can not be more then 1000 characters'],
     },
-    todoId: {
-      type: String,
+    todo: {
+      type: Schema.Types.ObjectId,
+      ref: 'Todo',
       required: true,
     },
-    userId: {
-      type: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     isDone: {

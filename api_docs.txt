@@ -15,5 +15,6 @@ get= '/user/logout'         *|* N/A
 
 todo routes
 ______________
-post= '/todo/create'        *|* {request body} -> [title(string), description(string), subTasks(array)]
+post= '/todo/create'        *|* {request body} -> [title(string), description(string), subTasks(array)->singleSubTasks{title:string,description:string}]
 put= '/todo/edit/{:todoId}' *|* {request body} -> [title(string), description(string)]
+put= '/todo/status/set/{:todoId}' *|* {request body} -> [status(string and status could be 'new', 'ongoing', 'paused', 'done' only)]

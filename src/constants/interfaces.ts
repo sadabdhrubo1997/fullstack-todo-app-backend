@@ -9,7 +9,7 @@ export interface JWTPayload extends JwtPayload {
   allowLogin?: boolean;
 }
 
-
-export interface IRequest extends Request{
-  user?:any;
+export interface IRequest extends Request {
+  user?: any;
+  temp?: any;
 }

@@ -22,7 +22,7 @@ export const checkTodoExistsWithAuthorMiddleware = async (
     const existingTask = await TodoModel.findOne({
       _id: todoId,
       userId: req.user.id,
-    });
+    }).lean();
 
     if (!existingTask) {
       return res.status(400).json({
@@ -30,6 +30,13 @@ export const checkTodoExistsWithAuthorMiddleware = async (
         message: 'Todo does not exists or you do not have permission.',
       });
     }
+
+    const tmp = {
+      todo: existingTask,
+    };
+
+    req.temp = tmp;
+
     next();
   } catch (error: any) {
     return res.status(500).json({

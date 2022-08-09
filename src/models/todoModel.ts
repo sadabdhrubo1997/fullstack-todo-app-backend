@@ -4,7 +4,7 @@ interface ITodoModel extends Document {
   title: string;
   description: string;
   status: 'new' | 'ongoing' | 'paused' | 'done';
-  userId: string;
+  user: Schema.Types.ObjectId;
   totalSubTasks: number;
   doneSubTasks: number;
   trash: boolean;
@@ -29,9 +29,10 @@ const TodoSchema = new Schema<ITodoModel>(
       enum: ['new', 'ongoing', 'paused', 'done'],
       default: 'new',
     },
-    userId: {
-      type: String,
-      require: true,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
     totalSubTasks: {
       type: Number,
