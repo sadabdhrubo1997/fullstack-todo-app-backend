@@ -2,7 +2,6 @@ import { NextFunction, Response } from 'express';
 import { IRequest } from '../constants/interfaces';
 import { sendServerSideError } from '../utils/helper/sendServerSideError';
 import SubTaskModel from './../models/subTaskModel';
-import TodoModel from './../models/todoModel';
 
 export const checkSubTaskExistsWithAuthorMiddleware = async (
   req: IRequest,
