@@ -53,7 +53,7 @@ export const addNewSubTaskController = async (req: IRequest, res: Response) => {
 
   try {
     const data: any = {
-      subTasks: [],
+      subTasks: null,
       todo: null,
     };
 
@@ -70,7 +70,13 @@ export const addNewSubTaskController = async (req: IRequest, res: Response) => {
       data.todo = updatedTodo;
     }
 
-    res.status(200).json({ status: 'success', data });
+    res
+      .status(200)
+      .json({
+        status: 'success',
+        message: 'sub tasks added successfully',
+        data,
+      });
   } catch (error: any) {
     sendServerSideError(res, error.message);
   }

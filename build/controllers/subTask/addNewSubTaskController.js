@@ -58,7 +58,7 @@ const addNewSubTaskController = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
     try {
         const data = {
-            subTasks: [],
+            subTasks: null,
             todo: null,
         };
         if (subTasksToAdd.length) {
@@ -67,7 +67,13 @@ const addNewSubTaskController = (req, res) => __awaiter(void 0, void 0, void 0, 
             const updatedTodo = yield todoModel_1.default.findOneAndUpdate({ _id: todoId }, { $inc: { totalSubTasks: subTasksToAdd.length } }, { new: true });
             data.todo = updatedTodo;
         }
-        res.status(200).json({ status: 'success', data });
+        res
+            .status(200)
+            .json({
+            status: 'success',
+            message: 'sub tasks added successfully',
+            data,
+        });
     }
     catch (error) {
         (0, sendServerSideError_1.sendServerSideError)(res, error.message);
