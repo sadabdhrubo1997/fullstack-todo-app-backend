@@ -12,12 +12,14 @@ const SubTaskSchema = new mongoose_1.Schema({
         require: true,
         maxlength: [1000, 'Title can not be more then 1000 characters'],
     },
-    todoId: {
-        type: String,
+    todo: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'Todo',
         required: true,
     },
-    userId: {
-        type: String,
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
     isDone: {

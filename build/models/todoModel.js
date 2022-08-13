@@ -17,9 +17,10 @@ const TodoSchema = new mongoose_1.Schema({
         enum: ['new', 'ongoing', 'paused', 'done'],
         default: 'new',
     },
-    userId: {
-        type: String,
-        require: true,
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     },
     totalSubTasks: {
         type: Number,

@@ -5,10 +5,13 @@ import {
   checkSubTaskExistsWithAuthorMiddleware,
   userLoginMiddleware,
 } from '../middlewares';
+ 
 import {
   addNewSubTaskController,
+  deleteSubTaskController,
   editSubTaskController,
   getAllSubTasksController,
+  subTaskMarkDoneController,
 } from './../controllers/subTask';
 
 const router = Router();
@@ -30,6 +33,18 @@ router.put(
   '/sub-tasks/edit/:subTaskId',
   checkSubTaskExistsWithAuthorMiddleware,
   editSubTaskController
+);
+
+router.put(
+  '/sub-tasks/mark/done/:subTaskId',
+  checkSubTaskExistsWithAuthorMiddleware,
+  subTaskMarkDoneController
+);
+
+router.delete(
+  '/sub-tasks/delete/:subTaskId',
+  checkSubTaskExistsWithAuthorMiddleware,
+  deleteSubTaskController
 );
 
 export default router;

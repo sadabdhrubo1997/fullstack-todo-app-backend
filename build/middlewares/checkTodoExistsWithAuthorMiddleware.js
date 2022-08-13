@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkTodoExistsWithAuthorMiddleware = void 0;
 const todoModel_1 = __importDefault(require("../models/todoModel"));
+const sendServerSideError_1 = require("../utils/helper/sendServerSideError");
 const checkTodoExistsWithAuthorMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { todoId } = req.params;
     // check for Todo Id through params
@@ -25,23 +26,24 @@ const checkTodoExistsWithAuthorMiddleware = (req, res, next) => __awaiter(void 0
     }
     try {
         // check if the task exists with id
-        const existingTask = yield todoModel_1.default.findOne({
+        const existingTodo = yield todoModel_1.default.findOne({
             _id: todoId,
-            userId: req.user.id,
-        });
-        if (!existingTask) {
+            user: req.user.id,
+        }).lean();
+        if (!existingTodo) {
             return res.status(400).json({
                 status: 'error',
                 message: 'Todo does not exists or you do not have permission.',
             });
         }
+        const tmp = {
+            todo: existingTodo,
+        };
+        req.temp = tmp;
         next();
     }
     catch (error) {
-        return res.status(500).json({
-            status: 'error',
-            message: error.message || 'Something went wrong',
-        });
+        return (0, sendServerSideError_1.sendServerSideError)(res, error.message);
     }
 });
 exports.checkTodoExistsWithAuthorMiddleware = checkTodoExistsWithAuthorMiddleware;

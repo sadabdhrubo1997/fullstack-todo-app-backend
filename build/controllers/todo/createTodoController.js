@@ -14,8 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTodoController = void 0;
 const todoModel_1 = __importDefault(require("./../../models/todoModel"));
+const subTaskModel_1 = __importDefault(require("./../../models/subTaskModel"));
+const sendServerSideError_1 = require("../../utils/helper/sendServerSideError");
 const createTodoController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, subTasks = [] } = req.body;
+    const subTasksToAdd = [];
     // check for all the required fields
     if (!title || !description) {
         return res.status(400).json({
@@ -41,16 +44,50 @@ const createTodoController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const createdTodo = yield todoModel_1.default.create({
             title,
             description,
-            userId: req.user.id,
+            user: req.user.id,
             totalSubTasks: subTasks.length,
         });
-        res.status(200).json({ data: createdTodo });
+        if (subTasks.length) {
+            for (let i = 0; i < subTasks.length; i++) {
+                const element = subTasks[i];
+                // check for all the required fields
+                if (!element.title || !element.description) {
+                    return res.status(400).json({
+                        status: 'error',
+                        message: 'Sub Task title and Sub Task description are required.',
+                    });
+                }
+                // check todo title field length
+                if (element.title.length > 100) {
+                    return res.status(400).json({
+                        status: 'error',
+                        message: 'Sub Task title can not be more than 100 characters.',
+                    });
+                }
+                // check todo description field length
+                if (element.description.length > 1000) {
+                    return res.status(400).json({
+                        status: 'error',
+                        message: 'Sub Task description can not be more than 100 characters.',
+                    });
+                }
+                element.todo = createdTodo._id;
+                element.user = req.user.id;
+                subTasksToAdd.push(element);
+            }
+        }
+        const data = {
+            todo: createdTodo,
+            subTasks: [],
+        };
+        if (subTasksToAdd.length) {
+            const addedSubtasks = yield subTaskModel_1.default.insertMany(subTasksToAdd);
+            data.subTasks = addedSubtasks;
+        }
+        res.status(200).json({ status: 'success', data });
     }
     catch (error) {
-        return res.status(500).json({
-            status: 'error',
-            message: error.message || 'Something went wrong',
-        });
+        (0, sendServerSideError_1.sendServerSideError)(res, error.message);
     }
 });
 exports.createTodoController = createTodoController;

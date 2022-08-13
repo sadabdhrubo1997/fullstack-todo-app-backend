@@ -14,17 +14,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.statusSetTodoController = void 0;
 const todoModel_1 = __importDefault(require("../../models/todoModel"));
+// import SubTaskModel from './../../models/subTaskModel';
 const getUserWIseSubTasks_1 = require("./../../utils/helper/getUserWIseSubTasks");
 const statusSetTodoController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { todoId } = req.params;
     const { status } = req.body; // status could be 'new', 'ongoing', 'paused', 'done' only
+    const prevStatus = req.temp.todo.status;
     if (!(status === 'new' ||
         status === 'ongoing' ||
         status === 'paused' ||
         status === 'done')) {
         return res.status(400).json({
             status: 'error',
-            message: 'todo status could be only new or ongoing or paused or done',
+            message: 'Todo status could be only new or ongoing or paused or done',
+        });
+    }
+    if (status === prevStatus) {
+        return res.status(400).json({
+            status: 'error',
+            message: `Todo status is already ${prevStatus}`,
+        });
+    }
+    if ((prevStatus === 'new' && status === ('done' || 'paused')) ||
+        (prevStatus === 'ongoing' && status === 'new') ||
+        (prevStatus === 'paused' && status === 'new') ||
+        prevStatus === 'done') {
+        return res.status(400).json({
+            status: 'error',
+            message: `You can not set your todo status from '${prevStatus}' to '${status}'`,
         });
     }
     try {

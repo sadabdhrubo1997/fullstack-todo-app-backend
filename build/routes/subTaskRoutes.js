@@ -1,5 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const middlewares_1 = require("../middlewares");
+const subTask_1 = require("./../controllers/subTask");
 const router = (0, express_1.Router)();
+router.use(middlewares_1.userLoginMiddleware);
+router.get('/sub-tasks/get/all/:todoId', middlewares_1.checkTodoExistsWithAuthorMiddleware, subTask_1.getAllSubTasksController);
+router.post('/sub-tasks/add/:todoId', middlewares_1.checkTodoExistsWithAuthorMiddleware, subTask_1.addNewSubTaskController);
+router.put('/sub-tasks/edit/:subTaskId', middlewares_1.checkSubTaskExistsWithAuthorMiddleware, subTask_1.editSubTaskController);
+router.put('/sub-tasks/mark/done/:subTaskId', middlewares_1.checkSubTaskExistsWithAuthorMiddleware, subTask_1.subTaskMarkDoneController);
+router.delete('/sub-tasks/delete/:subTaskId', middlewares_1.checkSubTaskExistsWithAuthorMiddleware, subTask_1.deleteSubTaskController);
 exports.default = router;

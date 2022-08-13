@@ -22,14 +22,17 @@ export const checkSubTaskExistsWithAuthorMiddleware = async (
     // check if the sub task exists with id
     const existsSubTask = await SubTaskModel.findOne({
       _id: subTaskId,
+      user: req.user.id,
     })
       .populate('todo')
+      .populate('user')
       .lean();
 
     if (!existsSubTask) {
       return res.status(400).json({
         status: 'error',
-        message: 'Sub tasks does not exists.',
+        message:
+          'Sub tasks does not exists or you do not have permission to access the sub task.',
       });
     }
 
@@ -37,10 +40,18 @@ export const checkSubTaskExistsWithAuthorMiddleware = async (
     if (!existsSubTask.todo) {
       return res.status(400).json({
         status: 'error',
-        message:
-          'Sub Tasks wrapper todo does not exists or you do not have permission.',
+        message: 'Sub Tasks wrapper todo does not exists .',
       });
     }
+
+    // // check if the user authorized to access the sub task
+    // if (!existsSubTask.user=== req.user.id) {
+    //   return res.status(400).json({
+    //     status: 'error',
+    //     message:
+    //       'You do not have permission to access the sub task.',
+    //   });
+    // }
 
     const tmp = {
       subTasks: existsSubTask,
