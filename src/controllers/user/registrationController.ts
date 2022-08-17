@@ -53,7 +53,7 @@ export const userRegistrationController = async (
     const user = await UserModel.create({
       firstName,
       lastName,
-      email,
+      email: email.trim().toLowerCase(),
       password: hashedPassword,
     });
 

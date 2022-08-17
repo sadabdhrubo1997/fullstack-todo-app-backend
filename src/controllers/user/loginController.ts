@@ -21,7 +21,7 @@ export const userLoginController = async (req: Request, res: Response) => {
     const user = await UserModel.findOne({
       email: email.trim().toLowerCase(),
     })
-      .select(['+password -createdAt -updateAt -__v'])
+      .select('+password -createdAt -updateAt -__v')
       .lean();
 
     if (!user) {
