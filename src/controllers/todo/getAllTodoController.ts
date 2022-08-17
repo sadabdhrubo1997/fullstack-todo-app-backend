@@ -3,7 +3,7 @@ import { IRequest } from '../../constants/interfaces';
 import TodoModel from '../../models/todoModel';
 
 export const getAllTodoController = async (req: IRequest, res: Response) => {
-  const { trash=false, limit = 10, skip = 0, status = '' } = req.query;
+  const { trash = false, limit = 10, skip = 0, status = '' } = req.query;
 
   try {
     let count, allTodo;
@@ -16,13 +16,13 @@ export const getAllTodoController = async (req: IRequest, res: Response) => {
     ) {
       count = await TodoModel.count({
         user: req.user.id,
-        trash: trash && true,
+        trash: trash === 'true' && true,
         status,
       });
 
       allTodo = await TodoModel.find({
         user: req.user.id,
-        trash: trash && true,
+        trash: trash === 'true' && true,
         status,
       })
         .select('-__v')
@@ -31,12 +31,12 @@ export const getAllTodoController = async (req: IRequest, res: Response) => {
     } else {
       count = await TodoModel.count({
         user: req.user.id,
-        trash: trash && true,
+        trash: trash === 'true' && true,
       });
 
       allTodo = await TodoModel.find({
         user: req.user.id,
-        trash: trash && true,
+        trash: trash === 'true' && true,
       })
         .select('-__v')
         .limit(+limit)
