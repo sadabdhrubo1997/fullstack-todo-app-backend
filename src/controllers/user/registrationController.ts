@@ -88,11 +88,13 @@ export const userRegistrationController = async (
       .json({
         status: 'success',
         message: 'Registration successful',
-        user: {
-          _id: user._id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
+        data: {
+          user: {
+            _id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          },
         },
       });
   } catch (error: any) {
