@@ -18,6 +18,23 @@ export const userRegistrationController = async (
       message: 'First Name, last Name, email and password are required.',
     });
   }
+
+  // check first name length
+  if (firstName?.trim().length > 20) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'First Name can not be more then 20 characters.',
+    });
+  }
+
+  // check last name length
+  if (lastName?.trim().length > 20) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Last Name can not be more then 20 characters.',
+    });
+  }
+
   // validate email
   if (!validateEmail(email)) {
     return res.status(400).json({
