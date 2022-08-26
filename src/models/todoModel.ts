@@ -22,7 +22,7 @@ const TodoSchema = new Schema<ITodoModel>(
     description: {
       type: String,
       require: true,
-      maxlength: [1000, 'Title can not be more then 1000 characters'],
+      maxlength: [1000, 'Description can not be more then 1000 characters'],
     },
     status: {
       type: String,

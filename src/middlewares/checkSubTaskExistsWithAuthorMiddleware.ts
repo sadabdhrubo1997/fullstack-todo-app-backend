@@ -44,14 +44,6 @@ export const checkSubTaskExistsWithAuthorMiddleware = async (
       });
     }
 
-    // // check if the user authorized to access the sub task
-    // if (!existsSubTask.user=== req.user.id) {
-    //   return res.status(400).json({
-    //     status: 'error',
-    //     message:
-    //       'You do not have permission to access the sub task.',
-    //   });
-    // }
 
     const tmp = {
       subTasks: existsSubTask,

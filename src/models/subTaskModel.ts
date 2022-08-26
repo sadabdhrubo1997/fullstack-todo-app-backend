@@ -20,7 +20,7 @@ const SubTaskSchema = new Schema<ISubTaskModel>(
     description: {
       type: String,
       require: true,
-      maxlength: [1000, 'Title can not be more then 1000 characters'],
+      maxlength: [1000, 'Description can not be more then 1000 characters'],
     },
     todo: {
       type: Schema.Types.ObjectId,
